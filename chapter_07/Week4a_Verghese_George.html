@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: Time scale</title>
+		<script type="text/javascript" src="../d3.js"></script>
+		<style type="text/css">
+			/* No style rules here yet */		
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+          
+
+			var w = 1200;
+			var h = 800;
+			var padding = 80;
+			
+			var dataset, xScale, yScale, rScale; 
+
+			var formatTime = d3.timeFormat("%H");
+
+			var rowConverter = function(d) {
+                var date = new Date(d["Created Date"])
+				return {
+					Hour: date.getHours(),
+				};
+			}
+            
+       
+            function countHourOccurances(data){
+                var count ={}
+                for(var i in data){
+                    var hour = data[i].Hour
+                    if(hour in Object.keys(count)){
+                        count[hour]+=1
+                    }else{
+                        count[hour]=1
+                    }
+                }
+                var formatted = []
+                for(var c in count){
+                    if(c!="undefined"){
+                        formatted.push({Hour:parseInt(c),Count:count[c]})
+                    }
+                }
+                return formatted
+            }
+            
+            
+            
+
+			d3.csv("dataset_for_assignment.csv",rowConverter)
+                .then(function(data) {
+                
+                dataset = countHourOccurances(data);
+				xScale = d3.scaleLinear()
+							   .domain([
+									d3.min(dataset, function(d) { return d.Hour; }),
+									d3.max(dataset, function(d) { return d.Hour; })
+								])
+							   .range([padding, w - padding]);
+
+				yScale = d3.scaleLinear()
+							   .domain([
+									d3.min(dataset, function(d) { return d.Count; }),
+									d3.max(dataset, function(d) { return d.Count; })
+								])
+							   .range([h - padding, padding]);
+
+				rScale = d3.scaleLinear()
+							.domain ([
+								0,
+								d3.max(dataset, function(d) { return d.Count; })
+							])	
+							.range([4,18]);	
+		          
+                
+				var svg = d3.select("body")
+							.append("svg")
+							.attr("width", w)
+							.attr("height", h);
+
+ 				svg.selectAll("text")
+ 				   .data(dataset)
+ 				   .enter()
+ 				   .append("text")
+ 				   .text(function(d) {
+
+					   return d.Count;
+ 				   })
+ 				   .attr("x", function(d) {
+         
+					   return xScale(d.Hour) + rScale(d.Count)*2;
+			
+ 				   })
+ 				   .attr("y", function(d) {
+     
+					   return yScale(d.Count) - rScale(d.Count)*2;
+ 				   })
+ 				   .attr("font-family", "sans-serif")
+ 				   .attr("font-size", "11px")
+ 				   .attr("fill", "#bbb");
+
+				svg.selectAll("circle")
+				   .data(dataset)
+				   .enter()
+				   .append("circle")
+				   .attr("cx", function(d) {
+                  
+					   return xScale(d.Hour);
+				   })
+				   .attr("cy", function(d) {
+                    
+					   return yScale(d.Count);
+				   })
+				   .attr("r", function(d){
+                 
+					   return rScale(d.Count);
+				   });
+                   
+              
+			});
+			
+		</script>
+	</body>
+</html>
