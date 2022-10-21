@@ -15,21 +15,24 @@
             //2. change the bar chart colors so that instead of shades of blue, the colors are shades of red or green. (r,g,b)
             
 			//Width and height
+			var w = 500;
+			var h = 100;
+
 			
 			var dataset = [ 50,22, 100, 130,300,20];
 			
 			//Create SVG element
 			var svg = d3.select("body")
 						.append("svg")
-						.attr("width", 200)
-						.attr("height", 200);
+						.attr("width", w)
+						.attr("height", h);
 
 			svg.selectAll("rect")
 			   .data(dataset)
 			   .enter()
 			   .append("rect")
                 //HINT: start by switching the x and y values with eachother, and the width and height values with eachother. 
-                        //then adjust the y values such that they align on the bottom.
+                //then adjust the y values such that they align on the bottom.
 			   .attr("x", function(d, i) {
 			   		return i*20
 			   })
