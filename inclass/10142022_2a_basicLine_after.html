@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <title>basic located</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    
+    
+    
+<script type="text/javascript" src="../d3.js"></script>
+  
+    
+    <style>
+      
+    </style>
+</head>
+<body>
+    
+</div>
+		<script type="text/javascript"> 
+			
+			//1. define a line and 
+			//2. then draw
+			//3. try a curve
+			
+			
+            var w = 800
+            var h = 600
+            //basic svg setup
+            var tempData1 = [0,20,3,12,45]
+
+            var svg = d3.select("body").append("svg").attr("width",w).attr("height",h)
+            
+           //The scales for x and y
+            var yScale = d3.scaleLinear()
+                .domain([0,90])
+                .range([h,0])
+			
+            //x uses the index value to place the dots evenly across
+            //can of course be ordinal using band
+            var xScale = d3.scaleLinear().domain([0,tempData1.length]).range([0,w])
+         
+			//1. define a line and 
+            
+            var line = d3.line()
+                .x(function(d,i){
+                    return xScale(i)
+                })
+                .y(function(d,i){
+                    return yScale(d)
+                })
+				//see other types of curves here http://using-d3js.com/05_04_curves.html
+		         .curve(d3.curveCardinal)   
+				
+			//2. then draw	
+	    svg.append("path")
+					.attr("class","line1")
+	        .data([tempData1])
+	        .attr("d",line
+			)
+	        .attr("fill", "none")//styles the line with attr
+	        .attr("stroke", "black")//styles the line with attr
+                //try the below and also other curves: http://bl.ocks.org/emmasaunders/raw/c25a147970def2b02d8c7c2719dc7502/
+                //.curve(d3.curveCardinal)   
+      
+
+</script>
+</body>
+</html>

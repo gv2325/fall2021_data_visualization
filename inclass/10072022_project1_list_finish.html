@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>blank</title>
+		<script type="text/javascript" src="../d3.js"></script>
+		<style>
+			/*your css here*/
+			#chart{
+				font-size:24px;
+				font-family:helvetica;
+			}
+			
+		</style>
+	</head>
+	
+	<body>
+		new file with project 1
+		<div id="chart"></div>
+
+		<script type="text/javascript">
+			
+			var presented = ["antonioeddiejoe_605656_15298774_selfquantification_antonio_eddiejoe.pdf",
+"daiyuehan_603297_15304750_Data Vis_ Project 1 Self Quantification Final-1.pdf",
+"hansonmargaret_LATE_540967_15309418_Hanson_Margaret_Project 1 Self Quantification Final-1.pdf",
+"horchungying_599793_15308476_Chung-Ying Hor Self Quantification-1.jpg",
+"kohclaire_604830_15308948_Project 1 Self Quantification-01.jpg",
+"tantiwasadakranvarisa_LATE_541107_15391634_tanti_varisa_project1.pdf"]
+			
+			
+			Promise.all([d3.csv("project1s.csv")])
+			.then(function(d){
+				var names = d[0]
+				var shuffled = shuffle(names)
+				
+				for(var i in shuffled){
+					var projectName = shuffled[i].name
+					
+					//1. using code from last week - add a filter for those who presented
+					if(presented.indexOf(projectName)==-1){
+						d3.select("#chart").append("div").html(projectName)
+						//2. add some drama with a transition	
+						
+						//new code that sets the opacity to 0 
+						//and uses the index to make them apear delayed
+						.style("opacity",0)
+						.transition()
+						.duration(1000)
+						.delay(i*1000)
+						.style("opacity",1)
+					}
+				}
+			})
+			
+			
+			
+			
+			//shuffle code from internet
+			function shuffle(array) {
+			  let currentIndex = array.length,  randomIndex;
+
+			  // While there remain elements to shuffle.
+			  while (currentIndex != 0) {
+
+			    // Pick a remaining element.
+			    randomIndex = Math.floor(Math.random() * currentIndex);
+			    currentIndex--;
+
+			    // And swap it with the current element.
+			    [array[currentIndex], array[randomIndex]] = [
+			      array[randomIndex], array[currentIndex]];
+			  }
+
+			  return array;
+			}
+			
+			
+		</script>
+	</body>
+</html>

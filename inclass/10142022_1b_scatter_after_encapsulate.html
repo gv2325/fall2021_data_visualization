@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>blank</title>
+		<script type="text/javascript" src="../d3.js"></script>
+		<style>
+			/*your css here*/
+			#chart{
+				font-size:11px;
+				font-family:helvetica;
+			}
+			
+		</style>
+	</head>
+	
+	<body>
+		in class
+		<div id="chart"></div>
+
+		<script type="text/javascript">
+			
+			
+			
+			//anscombe's quartet
+var set1 = [{x:10,y:8.04},{x:8,y:6.95},{x:13,y:7.58},{x:9,y:8.81},{x:11,y:8.33},{x:14,y:9.96},{x:6,y:7.24},{x:4,y:4.26},{x:12,y:10.84},{x:7,y:4.82},{x:5,y:5.68}]
+
+var set2 = [{x:10,y:9.14},{x:8,y:8.14},{x:13,y:8.74},{x:9,y:8.77},{x:11,y:9.26},{x:14,y:8.1},{x:6,y:6.13},{x:4,y:3.1},{x:12,y:9.13},{x:7,y:7.26},{x:5,y:4.74}]
+
+var set3 = [{x:10,y:7.46},{x:8,y:6.77},{x:13,y:12.74},{x:9,y:7.11},{x:11,y:7.81},{x:14,y:8.84},{x:6,y:6.08},{x:4,y:5.39},{x:12,y:8.15},{x:7,y:6.42},{x:5,y:5.73}]
+
+var set4 = [{x:8,y:6.58},{x:8,y:5.76},{x:8,y:7.71},{x:8,y:8.84},{x:8,y:8.47},{x:8,y:7.04},{x:8,y:5.25},{x:19,y:12.5},{x:8,y:5.56},{x:8,y:7.91},{x:8,y:6.89}]
+			
+			
+//7.encapsulate into function
+//8.run with each of the 4 sets
+
+drawScatter(set1)
+drawScatter(set2)
+drawScatter(set3)
+drawScatter(set4)
+			
+function drawScatter(data){
+				
+			
+	var w = 600
+	var h = 400
+			
+	var rScale = d3.scaleLinear().domain([0,20]).range([0,10])
+	
+	var xScale = d3.scaleLinear().domain([0,20]).range([0,w])
+	var yScale = d3.scaleLinear().domain([0,20]).range([h,0])
+			
+	var svg = d3.select("#chart")
+				.append("svg")
+				.attr("width", w)
+				.attr("height", h);
+			svg.selectAll("circle")
+			   .data(data)
+			   .enter()
+			   .append("circle")
+			   .attr("cx", function(d) {
+			   		return xScale(d.x)
+			   })
+			   .attr("cy", function(d) {
+			   		return yScale(d.y)
+			   })
+			   .attr("r", function(d){
+			   	return rScale(d.x)
+			   })
+			   .attr("fill",function(d){
+				   if(d.y>5){
+				   	return "blue"
+				   }
+			   })
+			   
+			svg.selectAll("text")
+			   .data(data)
+			   .enter()
+			   .append("text")
+			   .attr("x", function(d) {
+			   		return xScale(d.x)
+			   })
+			   .attr("y", function(d) {
+			   		return yScale(d.y)
+			   })
+			   .text(function(d){
+			   	return d.x+","+d.y
+			   })
+			   .attr("fill",function(d){
+				   if(d.y>5){
+				   	return "blue"
+				   }
+			   })
+		   }
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>blank</title>
+		<script type="text/javascript" src="../d3.js"></script>
+		<style>
+			/*your css here*/
+			#popup{
+				position:absolute;
+				left:10px;
+				top:10px;
+				background-color:white;
+			}
+			
+		</style>
+	</head>
+	
+	<body>
+		<div id="barChart">
+			bar chart goes here
+		</div>
+		
+
+		<script type="text/javascript">
+			
+			
+			var aBunchOfText = d3.select("body").append("div")
+			.attr("id","aBunchOfText")
+			
+			aBunchOfText.append("p")
+			.attr("id","popup")
+			.html("popup text")
+			
+			var data = []
+			
+			for(var i =0; i<100; i++){
+				var currentRandomNumber = Math.random()*100
+				//console.log(i,currentRandomNumber)
+				data.push(currentRandomNumber)
+			}
+			data = data.sort(function(a,b){
+				console.log(a,b)
+				return b-a
+			})
+			
+			
+			//console.log(data)
+			var w = 500
+			var h = 500
+			var p = 60
+			
+			var yScale = d3.scaleLinear()
+			.domain([0,100])
+			.range([h,0])
+			
+			var svg = d3.select("#barChart").append("svg")
+			.attr("width",w+p*2)
+			.attr("height",h+p*2)
+			
+			
+			
+			
+			
+		 	svg.selectAll("rect")
+			.data(data)
+			.enter()
+			.append("rect")
+			.attr("x",function(d,i){
+				//console.log(d,i)
+				return i*5
+			})
+			.attr("y",function(d,i){
+				return h-yScale(100-d)
+			})
+			.attr("width",function(){
+				return 4
+			})
+			.attr("height",function(d){
+				return yScale(100-d)
+			})
+			.attr("transform","translate("+p+","+p+")")
+			.on("mouseover",function(d){
+				//console.log(d)
+				
+				var mouseX = event.clientX; 
+				var mouseY = event.clientY;
+				
+				d3.select(this).attr("fill","red")
+				
+				d3.select("#popup").html(d)
+				.style("left",mouseX+"px")
+				.style("top",mouseY+"px")
+				
+			
+				
+				//console.log("mouse position",mouseX,mouseY)
+				
+				
+			})
+			.on("mouseout",function(){
+				d3.select(this).attr("fill","black")
+				
+			})
+			
+			
+			
+			var yAxis = d3.axisLeft()
+			.scale(yScale)
+			
+			svg.append("g")
+			.call(yAxis)
+			.attr("transform","translate("+p+","+p+")")
+			
+			
+		</script>
+	</body>
+</html>
